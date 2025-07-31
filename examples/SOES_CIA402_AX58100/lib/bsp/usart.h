@@ -3,9 +3,7 @@
 
 #include <stdio.h>
 
-#include "stm32f4xx_conf.h"
-
-
+#include <stm32f4xx_hal.h>
 
 // USART6, TX - PC6
 #define APP_USART                        USART6

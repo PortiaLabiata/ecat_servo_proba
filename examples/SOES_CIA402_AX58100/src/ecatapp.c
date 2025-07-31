@@ -5,7 +5,8 @@
 #include "utypes.h"
 
 #include "esc_irq.h"
-#include "pdo_override.h"
+//#include "pdo_override.h"
+#include "spi.h"
 #include "cia402device.h"
 #include "ecatapp.h"
 
@@ -35,8 +36,8 @@ static esc_cfg_t config = {
     .safeoutput_override       = NULL,
     .pre_object_download_hook  = NULL,
     .post_object_download_hook = NULL,
-    .rxpdo_override            = rxpdo_override,
-    .txpdo_override            = txpdo_override,
+    .rxpdo_override            = NULL,
+    .txpdo_override            = NULL,
     .esc_hw_interrupt_enable   = ESC_interrupt_enable,
     .esc_hw_interrupt_disable  = ESC_interrupt_disable,
     .esc_hw_eep_handler        = NULL,
@@ -55,29 +56,24 @@ static uint8_t sync0_irq_flag = 0;
 
 void EXTI1_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line1) != RESET)
-    {
-        EXTI_ClearITPendingBit(EXTI_Line1);
-        sync0_irq_flag = 1;
-    }
+    __HAL_GPIO_EXTI_CLEAR_IT(EXTI_LINE_1);
+    sync0_irq_flag = 1;
 }
 
 static uint8_t pdi_irq_flag = 0;
 
 void EXTI3_IRQHandler(void)
 {
-    if(EXTI_GetITStatus(EXTI_Line3) != RESET)
-    {
-        EXTI_ClearITPendingBit(EXTI_Line3);
-        pdi_irq_flag = 1;
-    }
+    __HAL_GPIO_EXTI_CLEAR_IT(EXTI_LINE_3);
+    pdi_irq_flag = 1;
 }
 // **************************************************************
 
 void ecatapp_init(void) {
     ecat_slv_init(&config);
     cia402_init(&cia402axis);
-	init_override();
+	//init_override();
+    spi_setup();
 }
 
 uint16_t check_dc_handler (void)

@@ -1,12 +1,11 @@
 #include "usart.h"
 
 
-USART_InitTypeDef USART_InitStructure;
-
+USART_HandleTypeDef huart1;
 
 int __io_putchar(int c) {
-	while (USART_GetFlagStatus(APP_USART, USART_FLAG_TXE) == RESET) {}
-	USART_SendData(APP_USART, c);
+  //while (__HAL_USART_GET_FLAG(&huart1, USART_FLAG_TXE) == RESET) {}
+  HAL_USART_Transmit(&huart1, &c, 1, HAL_MAX_DELAY);
 
 	return c;
 }
@@ -95,33 +94,25 @@ char* HEX4B(uint32_t val) {
     return s;
 }
 
-void USART_COMInit(USART_InitTypeDef* USART_InitStruct)
+void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  if(huart->Instance==USART1)
+  {
+    __HAL_RCC_USART1_CLK_ENABLE();
 
-  RCC_AHB1PeriphClockCmd(APP_USART_TX_GPIO_CLK | APP_USART_RX_GPIO_CLK, ENABLE);
-  RCC_APB2PeriphClockCmd(APP_USART_CLK, ENABLE);
-  // RCC_APB1PeriphClockCmd(APP_USART_CLK, ENABLE);
-
-  GPIO_PinAFConfig(APP_USART_TX_GPIO_PORT, APP_USART_TX_SOURCE, APP_USART_TX_AF);
-  GPIO_PinAFConfig(APP_USART_RX_GPIO_PORT, APP_USART_RX_SOURCE, APP_USART_RX_AF);
-
-  /* Configure USART Tx as alternate function  */
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-
-  GPIO_InitStructure.GPIO_Pin = APP_USART_TX_PIN;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_Init(APP_USART_TX_GPIO_PORT, &GPIO_InitStructure);
-
-  /* Configure USART Rx as alternate function  */
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Pin = APP_USART_RX_PIN;
-  GPIO_Init(APP_USART_RX_GPIO_PORT, &GPIO_InitStructure);
-
-  USART_Init(APP_USART, USART_InitStruct);
-  USART_Cmd(APP_USART, ENABLE);
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    /**USART1 GPIO Configuration
+    PA9     ------> USART1_TX
+    PA10     ------> USART1_RX
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  }
 }
 
 
@@ -134,15 +125,17 @@ void APP_USART_Init() {
   - Hardware flow control disabled (RTS and CTS signals)
   - Receive and transmit enabled
   */
-  USART_InitStructure.USART_BaudRate = 115200;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;
-  USART_InitStructure.USART_Parity = USART_Parity_No;
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-  // TX on PC6
-
-  USART_COMInit(&USART_InitStructure);
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 

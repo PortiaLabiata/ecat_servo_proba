@@ -2,7 +2,7 @@
 #define __ESC_IRQ_H__
 
 #include <stdint.h>
-
+#include <stm32f4xx_hal.h>
 
 void ESC_interrupt_enable (uint32_t mask);
 void ESC_interrupt_disable (uint32_t mask);

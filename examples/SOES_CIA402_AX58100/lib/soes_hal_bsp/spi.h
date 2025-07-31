@@ -2,8 +2,7 @@
 #define SRC_APP_SPI_H_
 
 #include <stdint.h>
-#include "stm32f4xx_conf.h"
-
+#include <stm32f4xx_hal.h>
 
 #define SCS_LOW                           0
 #define SCS_HIGH                          1
@@ -17,18 +16,18 @@
   #define ESC_RCC_APB1PERIPH_GPIOX_CTRL   RCC_AHB1Periph_GPIOA
   #define ESC_GPIOX_CTRL                  GPIOA
   
-  #define ESC_GPIO_Pin_SCK                GPIO_Pin_5
+  #define ESC_GPIO_Pin_SCK                GPIO_PIN_5
   #define ESC_GPIO_PinSourceSCK           GPIO_PinSource5
 
-  #define ESC_GPIO_Pin_MISO               GPIO_Pin_6
+  #define ESC_GPIO_Pin_MISO               GPIO_PIN_6
   #define ESC_GPIO_PinSource_MISO         GPIO_PinSource6
 
-  #define ESC_GPIO_Pin_MOSI               GPIO_Pin_7
+  #define ESC_GPIO_Pin_MOSI               GPIO_PIN_7
   #define ESC_GPIO_PinSource_MOSI         GPIO_PinSource7
 
   #define ESC_RCC_APB1PERIPH_GPIOX_CS     RCC_AHB1Periph_GPIOA
   #define ESC_GPIOX_CS                    GPIOA
-  #define ESC_GPIO_Pin_CS                 GPIO_Pin_4
+  #define ESC_GPIO_Pin_CS                 GPIO_PIN_4
 
 #else
   #error "Platform not supported"

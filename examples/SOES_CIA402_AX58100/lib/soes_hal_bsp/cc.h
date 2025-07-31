@@ -16,11 +16,7 @@ extern "C"
 #include <stddef.h>
 #include <inttypes.h>
 #include <sys/param.h>
-#ifdef __linux__
-   #include <endian.h>
-#else
-   #include <machine/endian.h>   
-#endif
+#include <machine/endian.h>
 
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
