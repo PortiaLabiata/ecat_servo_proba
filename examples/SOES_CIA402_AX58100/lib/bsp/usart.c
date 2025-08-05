@@ -5,7 +5,7 @@ UART_HandleTypeDef huart1;
 
 int __io_putchar(int c) {
   //while (__HAL_USART_GET_FLAG(&huart1, USART_FLAG_TXE) == RESET) {}
-  HAL_USART_Transmit(&huart1, &c, 1, HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart1, &c, 1, HAL_MAX_DELAY);
 
 	return c;
 }

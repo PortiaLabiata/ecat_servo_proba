@@ -59,6 +59,6 @@ void spi_unselect (int8_t board);
 void spi_write (int8_t board, uint8_t *data, uint8_t size);
 void spi_read (int8_t board, uint8_t *result, uint8_t size);
 void spi_bidirectionally_transfer (int8_t board, uint8_t *result, uint8_t *data, uint8_t size);
-
+extern void Error_Handler(void);
 
 #endif /* SRC_APP_SPI_H_ */

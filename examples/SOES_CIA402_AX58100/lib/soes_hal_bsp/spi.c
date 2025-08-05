@@ -70,7 +70,8 @@ void spi_unselect (int8_t board)
 inline static uint8_t spi_transfer(uint8_t byte)
 {
     uint8_t rec_byte = 0;
-    HAL_SPI_TransmitReceive(&hspi1, &byte, &rec_byte, 1, HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&hspi1, &byte, 1, HAL_MAX_DELAY);
+    HAL_SPI_Receive(&hspi1, &rec_byte, 1, HAL_MAX_DELAY);
     return rec_byte;
 }
 

@@ -26,5 +26,6 @@ void APP_USART_Send(char *c);
 char * STR5(uint32_t val);
 char * HEX4B(uint32_t val);
 char * DEC4B(uint32_t val);
+extern void Error_Handler(void);
 
 #endif // __USART_H__
