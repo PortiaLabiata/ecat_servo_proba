@@ -37,7 +37,7 @@ void spi_setup(void)
     hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
     hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
     hspi1.Init.NSS = SPI_NSS_SOFT;
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
     hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
     hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
     hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -70,9 +70,11 @@ void spi_unselect (int8_t board)
 inline static uint8_t spi_transfer(uint8_t byte)
 {
     uint8_t rec_byte = 0;
-    HAL_SPI_Transmit(&hspi1, &byte, 1, HAL_MAX_DELAY);
-    HAL_SPI_Receive(&hspi1, &rec_byte, 1, HAL_MAX_DELAY);
-    return rec_byte;
+   /*  HAL_SPI_Transmit(&hspi1, &byte, 1, HAL_MAX_DELAY);
+    const uint8_t dummy_byte = 0xFF;
+    HAL_SPI_TransmitReceive(&hspi1, &dummy_byte, &rec_byte, 1, HAL_MAX_DELAY); */
+    HAL_SPI_TransmitReceive(&hspi1, &byte, &rec_byte, 1, HAL_MAX_DELAY);
+    return byte;
 }
 
 void spi_write (int8_t board, uint8_t *data, uint8_t size)

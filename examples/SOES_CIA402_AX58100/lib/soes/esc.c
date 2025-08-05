@@ -1071,6 +1071,7 @@ void ESC_state (void)
    uint8_t ac, an, as;
 
    /* Do we have a state change request pending */
+   memset(&ESCvar.ALcontrol, 0, sizeof(ESCvar.ALcontrol));
    if (ESCvar.ALevent & ESCREG_ALEVENT_CONTROL)
    {
       ESC_read (ESCREG_ALCONTROL, (void *) &ESCvar.ALcontrol,

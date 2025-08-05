@@ -10,7 +10,7 @@
 extern "C"
 {
 #endif
-
+#define ESC_DEBUG
 #include <assert.h>
 #include <stdint.h>
 #include <stddef.h>
