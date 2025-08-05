@@ -1,7 +1,7 @@
 #include "usart.h"
 
 
-USART_HandleTypeDef huart1;
+UART_HandleTypeDef huart1;
 
 int __io_putchar(int c) {
   //while (__HAL_USART_GET_FLAG(&huart1, USART_FLAG_TXE) == RESET) {}

@@ -73,7 +73,7 @@ void ecatapp_init(void) {
     ecat_slv_init(&config);
     cia402_init(&cia402axis);
 	//init_override();
-    spi_setup();
+    //spi_setup();
 }
 
 uint16_t check_dc_handler (void)
